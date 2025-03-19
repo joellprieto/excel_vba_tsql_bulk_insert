@@ -3,6 +3,14 @@ excel_vba_tsql_bulk_insert
 
 ### connection string - note the SQL Server running here is docker thus path is using non-windows convention
 ```vba
+Sub copy_file(source as string, target_folder as String)
+    With New FileSystemObject
+        If .FileExists(source_file) And .FileExists(target_folder) Then
+            .CopyFile source_file, target_folder & "\", True
+        End If
+    End With
+End Sub
+
 Sub call_bulk_insert()
     Set conn = New ADODB.Connection
     User_ID = "set user id here if odbc is setup"
@@ -19,6 +27,15 @@ Sub call_bulk_insert()
     conn.Execute bulk_insert_string
     conn.Close
 End Sub
+
+Sub delete_target_file(target_file as String)
+    With New FileSystemObject
+        If .FileExists(target_file) Then
+            .DeleteFile target_file
+        End If
+    End With
+End Sub
+
 ```
 
 ### since TSQL insert treats as characters we will append the corresponding file format for transformation
