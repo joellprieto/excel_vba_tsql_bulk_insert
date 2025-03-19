@@ -9,7 +9,7 @@ Sub call_bulk_insert()
     Password = "set password here if odbc is setup"
     conn.ConnectionString = "dsn=DOCKER_SQL_SERVER;User ID=" & User_ID & ";Password=" & Password
     conn.Open
-    bulk_insert_string = "DROP table data_upload.dbo.people;create table data_upload.dbo.people (name varchar(max),age int,country varchar(max),dob Date); BULK INSERT [data_upload].[dbo].[people] FROM '/var/opt/mssql/bulk_insert/sample_data/sample_data.csv' WITH (FIELDTERMINATOR=',', FIRSTROW=2, FORMAT='CSV',FORMATFILE='/var/opt/mssql/bulk_insert/sample_data/sample_data.format');"
+    bulk_insert_string = "if object_id('data_upload.dbo.people', 'U') is not null drop table data_upload.dbo.people;create table data_upload.dbo.people (name varchar(max),age int,country varchar(max),dob Date); BULK INSERT [data_upload].[dbo].[people] FROM '/var/opt/mssql/bulk_insert/sample_data/sample_data.csv' WITH (FIELDTERMINATOR=',', FIRSTROW=2, FORMAT='CSV',FORMATFILE='/var/opt/mssql/bulk_insert/sample_data/sample_data.format');"
     conn.Execute bulk_insert_string
     conn.Close
 End Sub
